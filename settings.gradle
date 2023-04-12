@@ -1,2 +1,5 @@
 include ':app'
+include ':matrix-trace-canary'
+include ':matrix-android-commons'
+include ':matrix-android-lib'
 rootProject.name = "matrix_testing"

@@ -10,13 +10,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Matrix_testing">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".trace.TestStartUpActivity"/>
+        <activity android:name=".trace.TestOtherProcessActivity"/>
+        <activity android:name=".trace.TestTraceMainActivity" />
+        <activity android:name=".trace.TestTraceFragmentActivity" />
+        <activity android:name=".trace.TestEnterActivity" />
+        <activity android:name=".trace.TestFpsActivity" />
     </application>
 
 </manifest>
