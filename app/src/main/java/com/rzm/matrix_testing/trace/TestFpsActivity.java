@@ -36,6 +36,7 @@ import com.tencent.matrix.Matrix;
 import com.tencent.matrix.trace.TracePlugin;
 import com.tencent.matrix.trace.constants.Constants;
 import com.tencent.matrix.trace.listeners.IDoFrameListener;
+import com.tencent.matrix.trace.tracer.FrameTracer;
 import com.tencent.matrix.util.MatrixLog;
 
 import java.util.Random;
@@ -76,6 +77,13 @@ public class TestFpsActivity extends Activity {
 
     };
 
+    private FrameTracer.DropFrameListener mDropFrameListener = new FrameTracer.DropFrameListener() {
+        @Override
+        public void dropFrame(int droppedFrame, long jitter, String scene, long lastResumeTime) {
+            MatrixLog.i(TAG, "[dropFrame]" + " droppedFrame = " + droppedFrame + " jitter = " + jitter + " scene = " + scene + " lastResumeTime = " + lastResumeTime);
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +94,7 @@ public class TestFpsActivity extends Activity {
 
         Matrix.with().getPluginByClass(TracePlugin.class).getFrameTracer().onStartTrace();
         Matrix.with().getPluginByClass(TracePlugin.class).getFrameTracer().addListener(mDoFrameListener);
+        Matrix.with().getPluginByClass(TracePlugin.class).getFrameTracer().addDropFrameListener(10, mDropFrameListener);
 
         time = System.currentTimeMillis();
         mListView = (ListView) findViewById(R.id.list_view);
@@ -125,6 +134,7 @@ public class TestFpsActivity extends Activity {
         super.onDestroy();
         MatrixLog.i(TAG, "[onDestroy] count:" + count + " time:" + (System.currentTimeMillis() - time) + "");
         Matrix.with().getPluginByClass(TracePlugin.class).getFrameTracer().removeListener(mDoFrameListener);
+        Matrix.with().getPluginByClass(TracePlugin.class).getFrameTracer().removeDropFrameListener();
         Matrix.with().getPluginByClass(TracePlugin.class).getFrameTracer().onCloseTrace();
     }
 }

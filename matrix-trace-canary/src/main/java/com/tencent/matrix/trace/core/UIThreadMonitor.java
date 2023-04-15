@@ -245,6 +245,7 @@ public class UIThreadMonitor implements BeatLifecycle, Runnable {
         doQueueEnd(CALLBACK_TRAVERSAL);
 
         for (int i : queueStatus) {
+            //表示有开始，没结束
             if (i != DO_QUEUE_END) {
                 queueCost[i] = DO_QUEUE_END_ERROR;
                 if (config.isDevEnv) {
@@ -338,6 +339,43 @@ public class UIThreadMonitor implements BeatLifecycle, Runnable {
         }
     }
 
+    /**
+     * UIThreadMonitor 添加 CALLBACK_INPUT 类型的回调到 Choreographer；
+     * addFrameCallback(CALLBACK_INPUT, this, true);
+     *
+     * Choreographer 接收到系统信号，遍历 CALLBACK_INPUT 链表并执行回调；
+     * doCallbacks(Choreographer.CALLBACK_INPUT, frameTimeNanos);
+     *
+     * 此时 UIThreadMonitor 接收到回调，说明 CALLBACK_INPUT 类型的事件开始处理了，记录为开始状态并记录开始时间；
+     * doQueueBegin(CALLBACK_INPUT);
+     * 然后添加 CALLBACK_ANIMATION 类型的回调；
+     * addFrameCallback(CALLBACK_ANIMATION, new Runnable(){...},true);
+     *
+     * Choreographer 开始遍历 CALLBACK_ANIMATION 链表，然后执行回调；
+     * doCallbacks(Choreographer.CALLBACK_ANIMATION, frameTimeNanos);
+     *
+     * CALLBACK_ANIMATION 类型接收到回调，说明上一个类型 CALLBACK_INPUT 事件处理完毕了，记录为结束状态并统计耗时；
+     * doQueueEnd(CALLBACK_INPUT);
+     * 同时 CALLBACK_ANIMATION 事件开始处理了，记录为开始状态并记录开始时间；
+     * doQueueBegin(CALLBACK_ANIMATION);
+     *
+     * 添加 CALLBACK_TRAVERSAL 类型的回调；
+     * addFrameCallback(CALLBACK_TRAVERSAL, new Runnable(){...},true);
+     *
+     * Choreographer 开始遍历 CALLBACK_TRAVERSAL 链表，然后执行回调；
+     * doCallbacks(Choreographer.CALLBACK_TRAVERSAL, frameTimeNanos);
+     *
+     * CALLBACK_TRAVERSAL 类型接收到回调，说明 上一个类型CALLBACK_ANIMATION 的事件处理完毕了，记录为结束状态并统计耗时；
+     * doQueueEnd(CALLBACK_ANIMATION);
+     * 同时 CALLBACK_TRAVERSAL 事件开始处理了，记录为开始状态并记录开始时间；
+     *
+     * Handler 发送的事件是由 Looper 取出来处理的，如果能够监听 Looper 处理完这个事件了，说明 doFrame() 方法也执行完毕、 CALLBACK_TRAVERSA 也回调完毕了。
+     *
+     * 那么这个 Looper 处理事件结束时可以监听到么？见
+     * private void doFrameEnd(long token) {
+     *     doQueueEnd(CALLBACK_TRAVERSAL);
+     * }
+     */
     @Override
     public void run() {
         final long start = System.nanoTime();
