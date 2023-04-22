@@ -94,6 +94,7 @@ public class AppMethodBeat implements BeatLifecycle {
     };
 
     static {
+        //类加载时开始计时10s,也就是方法耗时只记录10s,应该是专门为了启动优化做的
         MatrixHandlerThread.getDefaultHandler().postDelayed(realReleaseRunnable, Constants.DEFAULT_RELEASE_BUFFER_DELAY);
     }
 
@@ -105,6 +106,7 @@ public class AppMethodBeat implements BeatLifecycle {
         public void run() {
             try {
                 while (true) {
+                    //更新时间值，这个时间是从类加载到当前执行的毫秒数
                     while (!isPauseUpdateTime && status > STATUS_STOPPED) {
                         sCurrentDiffTime = SystemClock.uptimeMillis() - sDiffTime;
                         SystemClock.sleep(Constants.TIME_UPDATE_CYCLE_MS);
@@ -170,6 +172,7 @@ public class AppMethodBeat implements BeatLifecycle {
 
     private static void realRelease() {
         synchronized (statusLock) {
+            MatrixLog.i(TAG, "[realRelease] status:" + status);
             if (status == STATUS_DEFAULT || status <= STATUS_READY) {
                 MatrixLog.i(TAG, "[realRelease] timestamp:%s", System.currentTimeMillis());
                 sHandler.removeCallbacksAndMessages(null);
@@ -186,11 +189,16 @@ public class AppMethodBeat implements BeatLifecycle {
         sCurrentDiffTime = SystemClock.uptimeMillis() - sDiffTime;
 
         sHandler.removeCallbacksAndMessages(null);
+        //sUpdateDiffTimeRunnable和checkStartExpiredRunnable都是在sTimerUpdateThread中处理的，而
+        //sUpdateDiffTimeRunnable会一直循环不会结束，所以checkStartExpiredRunnable一定时间内会无法得到执行
         sHandler.postDelayed(sUpdateDiffTimeRunnable, Constants.TIME_UPDATE_CYCLE_MS);
         sHandler.postDelayed(checkStartExpiredRunnable = new Runnable() {
             @Override
             public void run() {
                 synchronized (statusLock) {
+                    //也是一个超时的设置，10s 后，将状态设置为超时，那么插桩的代码就不会再执行，不过这个10s后并不是真的10s后，而是从
+                    //sUpdateDiffTimeRunnable执行结束后10s，但sUpdateDiffTimeRunnable似乎正常情况下是不会结束的，这个可能是
+                    //作为保底方案存在的，执行的几率很小
                     MatrixLog.i(TAG, "[startExpired] timestamp:%s status:%s", System.currentTimeMillis(), status);
                     if (status == STATUS_DEFAULT || status == STATUS_READY) {
                         status = STATUS_EXPIRED_START;
@@ -325,7 +333,6 @@ public class AppMethodBeat implements BeatLifecycle {
         if (methodId == AppMethodBeat.METHOD_ID_DISPATCH) {
             sCurrentDiffTime = SystemClock.uptimeMillis() - sDiffTime;
         }
-
         try {
             long trueId = 0L;
             if (isIn) {
@@ -333,10 +340,12 @@ public class AppMethodBeat implements BeatLifecycle {
             }
             trueId |= (long) methodId << 43;
             trueId |= sCurrentDiffTime & 0x7FFFFFFFFFFL;
+//            MatrixLog.i(TAG, "mergeData trueId = " + trueId+" sCurrentDiffTime = "+sCurrentDiffTime);
             sBuffer[index] = trueId;
             checkPileup(index);
             sLastIndex = index;
         } catch (Throwable t) {
+            MatrixLog.i(TAG, "mergeData error = " + t.getMessage());
             MatrixLog.e(TAG, t.getMessage());
         }
     }
@@ -415,12 +424,17 @@ public class AppMethodBeat implements BeatLifecycle {
         public boolean isValid = true;
         public String source;
 
+        /**
+         * 设计了一个单链表的结构，release就是将当前调用release的IndexRecord对象
+         * 从链表中删除
+         */
         public void release() {
             isValid = false;
             IndexRecord record = sIndexRecordHead;
             IndexRecord last = null;
             while (null != record) {
                 if (record == this) {
+                    //从链表中找到当前的节点，进行删除
                     if (null != last) {
                         last.next = record.next;
                     } else {

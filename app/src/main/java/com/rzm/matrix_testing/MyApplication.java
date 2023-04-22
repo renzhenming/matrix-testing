@@ -25,6 +25,7 @@ public class MyApplication extends Application {
 
         //init matrix
         Matrix.init(builder.build());
+        tracePlugin.start();
     }
 
 

@@ -236,7 +236,9 @@ public class StartupTracer extends Tracer implements IAppMethodBeatListener, Act
         public void run() {
             LinkedList<MethodItem> stack = new LinkedList();
             if (data.length > 0) {
+                //入栈
                 TraceDataUtils.structuredDataToStack(data, stack, false, -1);
+                //过滤出前30个最耗时的方法 TARGET_EVIL_METHOD_STACK = 30
                 TraceDataUtils.trimStack(stack, Constants.TARGET_EVIL_METHOD_STACK, new TraceDataUtils.IStructuredDataFilter() {
                     @Override
                     public boolean isFilter(long during, int filterCount) {
@@ -300,7 +302,7 @@ public class StartupTracer extends Tracer implements IAppMethodBeatListener, Act
             }
 
 
-            if ((allCost > coldStartupThresholdMs && !isWarmStartUp)
+            if ((allCost > 1000 && !isWarmStartUp)
                     || (allCost > warmStartupThresholdMs && isWarmStartUp)) {
 
                 try {
