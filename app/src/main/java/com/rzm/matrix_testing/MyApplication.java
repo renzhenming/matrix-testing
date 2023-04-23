@@ -26,6 +26,11 @@ public class MyApplication extends Application {
         //init matrix
         Matrix.init(builder.build());
         tracePlugin.start();
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

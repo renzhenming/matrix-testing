@@ -109,6 +109,9 @@ public class StartupTracer extends Tracer implements IAppMethodBeatListener, Act
         }
     }
 
+    /**
+     * 准备创建activity或者service或者receiver的时候，表示application创建完成
+     */
     @Override
     public void onApplicationCreateEnd() {
         if (!isHasActivity) {
@@ -202,6 +205,7 @@ public class StartupTracer extends Tracer implements IAppMethodBeatListener, Act
                 applicationCost, firstScreenCost, allCost, isWarmStartUp, ActivityThreadHacker.sApplicationCreateScene);
         long[] data = new long[0];
         if (!isWarmStartUp && allCost >= coldStartupThresholdMs) { // for cold startup
+            //将阶段内所有记录的方法耗时拷贝一份，用于后续分析
             data = AppMethodBeat.getInstance().copyData(ActivityThreadHacker.sApplicationCreateBeginMethodIndex);
             ActivityThreadHacker.sApplicationCreateBeginMethodIndex.release();
 
@@ -302,7 +306,7 @@ public class StartupTracer extends Tracer implements IAppMethodBeatListener, Act
             }
 
 
-            if ((allCost > 1000 && !isWarmStartUp)
+            if ((allCost > coldStartupThresholdMs && !isWarmStartUp)
                     || (allCost > warmStartupThresholdMs && isWarmStartUp)) {
 
                 try {
