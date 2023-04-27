@@ -78,6 +78,7 @@ public class TracePlugin extends Plugin {
         evilMethodTracer = new EvilMethodTracer(traceConfig);
 
         startupTracer = new StartupTracer(traceConfig);
+
     }
 
     @Override
