@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.rzm.matrix_testing.io.TestIOActivity;
 import com.rzm.matrix_testing.trace.TestTraceMainActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +21,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TestTraceMainActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button testIo = findViewById(R.id.test_io);
+        testIo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TestIOActivity.class);
                 startActivity(intent);
             }
         });

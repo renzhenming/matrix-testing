@@ -3,6 +3,8 @@ package com.rzm.matrix_testing;
 import android.app.Application;
 
 import com.tencent.matrix.Matrix;
+import com.tencent.matrix.iocanary.IOCanaryPlugin;
+import com.tencent.matrix.iocanary.config.IOConfig;
 import com.tencent.matrix.trace.TracePlugin;
 import com.tencent.matrix.trace.config.TraceConfig;
 import com.tencent.matrix.util.MatrixLog;
@@ -23,6 +25,10 @@ public class MyApplication extends Application {
 
         builder.plugin(tracePlugin);
 
+        // Configure io canary.
+        IOCanaryPlugin ioCanaryPlugin = configureIOCanaryPlugin(dynamicConfig);
+        builder.plugin(ioCanaryPlugin);
+
         //init matrix
         Matrix.init(builder.build());
         tracePlugin.start();
@@ -33,6 +39,11 @@ public class MyApplication extends Application {
         }
     }
 
+    private IOCanaryPlugin configureIOCanaryPlugin(DynamicConfigImplDemo dynamicConfig) {
+        return new IOCanaryPlugin(new IOConfig.Builder()
+                .dynamicConfig(dynamicConfig)
+                .build());
+    }
 
     private TracePlugin configureTracePlugin(DynamicConfigImplDemo dynamicConfig) {
 

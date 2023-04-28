@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".io.TestIOActivity"/>
         <activity android:name=".trace.TestStartUpActivity"/>
         <activity android:name=".trace.TestOtherProcessActivity"/>
         <activity android:name=".trace.TestTraceMainActivity" />
