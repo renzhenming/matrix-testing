@@ -126,6 +126,7 @@ namespace iocanary {
         if (-1 == stat(file_path, &stat_buf)) {
             return -1;
         }
+        //文件大小
         return stat_buf.st_size;
     }
     std::string MD5(std::string str) {

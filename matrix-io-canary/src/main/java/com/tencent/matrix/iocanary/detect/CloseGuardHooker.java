@@ -32,6 +32,34 @@ import java.lang.reflect.Proxy;
  *
  * @author liyongjie
  *         Created by liyongjie on 2017/6/9.
+ * CloseGurad提供了一种机制或者说是一个工具类，用来记录资源泄露的场景，比如使用完的资源(比如cursor/fd)没有正常关闭。
+ * 可以参考CloseGuard代码注释中提供的demo为需要管理的对象接入监控。接入之后，如果发生资源使用后没有正常关闭，
+ * 会在finalize方法中触发CloseGuard的warnIfOpen方法
+ *
+ * 在安卓系统内部已经大量接入了CloseGuard，譬如：
+ *
+ * ActivityView.java (core\java\android\app)
+ * Animation.java (core\java\android\view\animation)
+ * ContentProviderClient.java (core\java\android\content)
+ * ContentResolver.java (core\java\android\content)
+ * CursorWindow.java (core\java\android\database)
+ * DisplayEventReceiver.java (core\java\android\view)
+ * InputEventReceiver.java (core\java\android\view)
+ * InputQueue.java (core\java\android\view)
+ * NativeLibraryHelper.java (core\java\com\android\internal\content)
+ * NetworkStats.java
+ * PackageManagerService.java (e:\code\android-source\services\core\java\com\android\server\pm)
+ * ParcelFileDescriptor.java (core\java\android\os)
+ * PdfDocument.java (e:\code\android-source\graphics\java\android\graphics\pdf）
+ * PdfEditor.java (e:\code\android-source\graphics\java\android\graphics\pdf)
+ * PdfRenderer.java (e:\code\android-source\graphics\java\android\graphics\pdf)
+ * SQLiteConnectionPool.java (core\java\android\database\sqlite)
+ * SQLiteConnection.java (core\java\android\database\sqlite)
+ * SQLiteDatabase.java (core\java\android\database\sqlite)
+ * Surface.java (core\java\android\view)
+ * SurfaceControl.java (core\java\android\view)
+ * SystemSensorManager.java (core\java\android\hardware)
+ * UinputBridge.java (e:\code\android-source\services\core\java\com\android\server\tv)
  */
 
 public final class CloseGuardHooker {

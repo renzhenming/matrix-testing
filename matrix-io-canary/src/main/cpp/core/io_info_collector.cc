@@ -32,7 +32,7 @@ namespace iocanary {
         if (open_ret == -1) {
             return;
         }
-
+        //open_ret为文件句柄
         if (info_map_.find(open_ret) != info_map_.end()) {
             //__android_log_print(ANDROID_LOG_WARN, kTag, "OnOpen fd:%d already in info_map_", open_ret);
             return;

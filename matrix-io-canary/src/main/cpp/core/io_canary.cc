@@ -125,6 +125,7 @@ namespace iocanary {
                 detector->Detect(env_, *file_io_info, published_issues);
             }
 
+            //JNI_OnLoad中设置的监听
             if (issued_callback_ && !published_issues.empty()) {
                 issued_callback_(published_issues);
             }
