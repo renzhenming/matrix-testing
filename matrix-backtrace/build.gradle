@@ -1,0 +1,92 @@
+apply plugin: 'com.android.library'
+
+apply from: rootProject.file('gradle/WeChatNativeDepend.gradle')
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.MIN_SDK_VERSION_FOR_HOOK
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.VERSION_CODE
+        versionName rootProject.VERSION_NAME
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        ndk {
+            abiFilters rootProject.ABI_FILTERS as String[]
+        }
+
+        externalNativeBuild {
+            cmake {
+                targets = ['wechatbacktrace', 'unwindstack']
+                //指定 Cmake 编译所使用的标准模版库。
+                //使用示例：arguments "-DANDROID_STL=gnustl_static"
+                //libstdc++	 默认最小系统 C++ 运行时库	 不适用
+                //gabi++_static	 GAbi++ 运行时（静态）。	 C++ 异常和 RTTI
+                //gabi++_shared	 GAbi++ 运行时（共享）。	 C++ 异常和 RTTI
+                //stlport_static	 STLport 运行时（静态）。	 C++ 异常和 RTTI；标准库
+                //stlport_shared	 STLport 运行时（共享）。	 C++ 异常和 RTTI；标准库
+                //gnustl_static	 GNU STL（静态）。	 C++ 异常和 RTTI；标准库
+                //gnustl_shared	 GNU STL（共享）。	 C++ 异常和 RTTI；标准库
+                //c++_static	 LLVM libc++ 运行时（静态）。	 C++ 异常和 RTTI；标准库
+                //c++_shared	 LLVM libc++ 运行时（共享）。	 C++ 异常和 RTTI；标准库
+                arguments = ['-DANDROID_STL=c++_shared']
+
+                // 带着后边两个配置编译不过
+//                arguments = ['-DANDROID_STL=c++_shared',
+//                             "-DEnableLOG=${gradle.enableLog() ? "ON" : "OFF"}" as String,
+//                             "-DQUT_STATISTIC_ENABLE=${gradle.enableLog() ? "ON" : "OFF"}" as String]
+            }
+
+            exportHeaders {
+                from('src/main/cpp') {
+                    include 'common/*.h'
+                    moveToDir 'backtrace'
+                }
+                from('src/main/cpp/libwechatbacktrace/include') {
+                    include '**/*.h'
+                    moveToDir 'backtrace'
+                }
+                from('src/main/cpp/external/libunwindstack/include') {
+                    include '**/*.h'
+                    moveToDir 'backtrace'
+                }
+                from('src/main/cpp/dexfile/include') {
+                    include '**/*.h'
+                    moveToDir 'backtrace'
+                }
+            }
+        }
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+}
+
+apply from: project.file('dependencies.gradle')
+
+group = rootProject.GROUP
+version = rootProject.VERSION_NAME
+
+if("External" == rootProject.ext.PUBLISH_CHANNEL) {
+    apply from: rootProject.file('gradle/android-publish.gradle')
+}
+else {
+    apply from: rootProject.file('gradle/WeChatPublish.gradle')
+    wechatPublish {
+        artifactId = POM_ARTIFACT_ID
+    }
+}

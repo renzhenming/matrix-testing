@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="matrix_testing.app" target="1.8" />
+      <module name="matrix_testing.matrix-android-commons" target="1.8" />
+      <module name="matrix_testing.matrix-android-lib" target="1.8" />
+      <module name="matrix_testing.matrix-backtrace" target="1.8" />
+      <module name="matrix_testing.matrix-io-canary" target="1.8" />
+      <module name="matrix_testing.matrix-resource-canary.matrix-resource-canary-android" target="1.8" />
+      <module name="matrix_testing.matrix-trace-canary" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

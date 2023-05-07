@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.rzm.matrix_testing.io.TestIOActivity;
+import com.rzm.matrix_testing.resources.TestLeakActivity;
 import com.rzm.matrix_testing.trace.TestTraceMainActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TestIOActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button testLeak = findViewById(R.id.test_leak);
+        testLeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TestLeakActivity.class);
                 startActivity(intent);
             }
         });

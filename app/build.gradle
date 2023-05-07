@@ -25,6 +25,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -55,6 +58,8 @@ dependencies {
     implementation project(":matrix-trace-canary")
     implementation project(':matrix-android-lib')
     implementation project(':matrix-android-commons')
+    implementation project(':matrix-resource-canary:matrix-resource-canary-android')
+    implementation project(':matrix-resource-canary:matrix-resource-canary-common')
 
 
 //    implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
