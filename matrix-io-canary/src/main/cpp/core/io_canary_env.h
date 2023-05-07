@@ -46,6 +46,9 @@ namespace iocanary {
         //it may be negative if the io-cost more than POSSIBLE_NEGATIVE_THRESHOLD
         //else it can be negligible
         //80% of the well-known 16ms
+        //在 C++11 中添加了一个新的关键字 constexpr，这个关键字是用来修饰常量表达式的。
+        // 所谓常量表达式，指的就是由多个（≥1）常量（值不会改变）组成并且在编译过程中就得到计算结果的表达式。
+        //在定义常量时，const 和 constexpr 是等价的，都可以在程序的编译阶段计算出结果
         constexpr static const int kPossibleNegativeThreshold = 13*1000;
         constexpr static const int kSmallBufferOpTimesThreshold = 20;
     private:

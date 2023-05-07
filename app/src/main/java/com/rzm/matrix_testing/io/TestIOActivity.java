@@ -18,8 +18,11 @@ package com.rzm.matrix_testing.io;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
@@ -75,6 +78,22 @@ public class TestIOActivity extends Activity {
                         EXTERNAL_STORAGE_REQ_CODE);
             }
         }
+        if (Environment.isExternalStorageManager()) {
+            //已经开启权限
+        } else {
+            //建议再增加一个提示 提醒用户 需要授权权限才可以继续使用该功能
+            //未开启权限,弹窗申请权限
+            openAllFilesPermission();
+        }
+
+
+    }
+
+    private void openAllFilesPermission(){
+//        Log.d(TAG, "MainActivity getPackageName"+getApplicationContext().getPackageName());
+        Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+//    intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName())); //此处注释，增加后会报错，暂未解决
+        startActivityForResult(intent, 100);
     }
 
     @Override
