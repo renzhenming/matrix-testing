@@ -172,10 +172,11 @@ public class ManualDumpProcessor extends BaseLeakProcessor {
     private ManualDumpData dumpAndAnalyse(String activity, String key) {
 
         getWatcher().triggerGc();
-
+        ///storage/emulated/0/Android/data/com.rzm.matrix_testing/cache/matrix_resource/dump_com_rzm_matrix_testing_leaktest_27284_20230510081005.hprof
         File file = getDumpStorageManager().newHprofFile();
         final ActivityLeakResult result = MemoryUtil.dumpAndAnalyze(file.getAbsolutePath(), key, 600);
         if (result.mLeakFound) {
+            //Leak Reference:dalvik.system.PathClassLoader runtimeInternalObjects;array java.lang.Object[] [*];static com.rzm.matrix_testing.resources.TestLeakActivity testLeaks;java.util.HashSet map;java.util.HashMap table;array java.util.HashMap$Node[] [*];java.util.HashMap$Node key;com.rzm.matrix_testing.resources.TestLeakActivity ;
             final String leakChain = result.toString();
             publishIssue(
                     SharePluginInfo.IssueType.LEAK_FOUND,

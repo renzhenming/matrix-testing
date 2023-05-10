@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -58,14 +59,12 @@ public class TestLeakActivity extends Activity {
             plugin.start();
         }
 
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inSampleSize = 2;
-//        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.welcome_bg, options));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 2;
+        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.welcome_bg, options));
         MatrixLog.i(TAG, "test leak activity size: %d, bitmaps size: %d", testLeaks.size(), bitmaps.size());
 
         setContentView(R.layout.test_leak);
-
-//        IssueFilter.setCurrentFilter(IssueFilter.ISSUE_LEAK);
     }
 
     @Override

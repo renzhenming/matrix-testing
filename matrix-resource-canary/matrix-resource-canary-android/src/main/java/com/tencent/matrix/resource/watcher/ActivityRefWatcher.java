@@ -203,6 +203,7 @@ public class ActivityRefWatcher extends FilePublisher implements Watcher {
         final StringBuilder keyBuilder = new StringBuilder();
         keyBuilder.append(ACTIVITY_REFKEY_PREFIX).append(activityName)
                 .append('_').append(Long.toHexString(uuid.getMostSignificantBits())).append(Long.toHexString(uuid.getLeastSignificantBits()));
+        //MATRIX_RESCANARY_REFKEY_com.rzm.matrix_testing.resources.TestLeakActivity_bb1e91a3064843d69a1153154deba439
         final String key = keyBuilder.toString();
         final DestroyedActivityInfo destroyedActivityInfo
                 = new DestroyedActivityInfo(key, activity, activityName);

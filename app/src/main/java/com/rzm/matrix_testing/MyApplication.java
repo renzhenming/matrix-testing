@@ -1,10 +1,15 @@
 package com.rzm.matrix_testing;
 
 import android.app.Application;
+import android.content.Intent;
+import android.os.Build;
 
+import com.rzm.matrix_testing.resources.ManualDumpActivity;
 import com.tencent.matrix.Matrix;
 import com.tencent.matrix.iocanary.IOCanaryPlugin;
 import com.tencent.matrix.iocanary.config.IOConfig;
+import com.tencent.matrix.resource.ResourcePlugin;
+import com.tencent.matrix.resource.config.ResourceConfig;
 import com.tencent.matrix.trace.TracePlugin;
 import com.tencent.matrix.trace.config.TraceConfig;
 import com.tencent.matrix.util.MatrixLog;
@@ -28,6 +33,10 @@ public class MyApplication extends Application {
         // Configure io canary.
         IOCanaryPlugin ioCanaryPlugin = configureIOCanaryPlugin(dynamicConfig);
         builder.plugin(ioCanaryPlugin);
+
+        // Configure resource canary.
+        ResourcePlugin resourcePlugin = configureResourcePlugin(dynamicConfig);
+        builder.plugin(resourcePlugin);
 
         //init matrix
         Matrix.init(builder.build());
@@ -83,5 +92,21 @@ public class MyApplication extends Application {
         //useSignalAnrTraceAlone(anrTraceFile.getAbsolutePath(), printTraceFile.getAbsolutePath());
 
         return new TracePlugin(traceConfig);
+    }
+
+    private ResourcePlugin configureResourcePlugin(DynamicConfigImplDemo dynamicConfig) {
+        Intent intent = new Intent();
+        ResourceConfig.DumpMode mode = ResourceConfig.DumpMode.MANUAL_DUMP;
+        MatrixLog.i(TAG, "Dump Activity Leak Mode=%s", mode);
+        intent.setClassName(this.getPackageName(), "com.rzm.matrix_testing.resources.ManualDumpActivity");
+        ResourceConfig resourceConfig = new ResourceConfig.Builder()
+                .dynamicConfig(dynamicConfig)
+                .setAutoDumpHprofMode(mode)
+                .setManualDumpTargetActivity(ManualDumpActivity.class.getName())
+                .setManufacture(Build.MANUFACTURER)
+                .setDetectDebuger(true) //调试时也检测
+                .build();
+        ResourcePlugin.activityLeakFixer(this);
+        return new ResourcePlugin(resourceConfig);
     }
 }

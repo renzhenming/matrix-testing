@@ -46,6 +46,7 @@ public final class ResourceConfig {
 
     private final IDynamicConfig mDynamicConfig;
     private final DumpMode mDumpHprofMode;
+    //调试模式下是否检测，默认false
     private final boolean mDetectDebugger;
     private final String mTargetActivity;
     private final String mManufacture;
