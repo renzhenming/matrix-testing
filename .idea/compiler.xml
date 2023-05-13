@@ -6,7 +6,10 @@
       <module name="matrix_testing.matrix-android-commons" target="1.8" />
       <module name="matrix_testing.matrix-android-lib" target="1.8" />
       <module name="matrix_testing.matrix-backtrace" target="1.8" />
+      <module name="matrix_testing.matrix-fd" target="1.8" />
+      <module name="matrix_testing.matrix-hooks" target="1.8" />
       <module name="matrix_testing.matrix-io-canary" target="1.8" />
+      <module name="matrix_testing.matrix-jectl" target="1.8" />
       <module name="matrix_testing.matrix-resource-canary.matrix-resource-canary-android" target="1.8" />
       <module name="matrix_testing.matrix-trace-canary" target="1.8" />
     </bytecodeTargetLevel>

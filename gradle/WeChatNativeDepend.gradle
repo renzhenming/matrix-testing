@@ -332,6 +332,8 @@ def injectNativeDependenciesPath() {
 
     def cmakeOpt = project.android.defaultConfig.externalNativeBuild.cmake
     cmakeOpt.getArguments().add('-DEXT_DEP=' + extractedNativeDepsDir.absolutePath)
+
+    println("extractedNativeDepsDir.absolutePath = "+extractedNativeDepsDir.absolutePath)
 }
 
 def generateBuildInfoHeader(boolean stubOnly) {

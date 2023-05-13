@@ -30,6 +30,7 @@ TARGET_INCLUDE_DIRECTORIES(io-canary PRIVATE ${EXT_DEP}/include)
 
 find_library(log-lib
         log)
+#EXT_DEP = /Users/renzhenming/AndroidStudioProjects/matrix_testing/matrix-io-canary/build/intermediates/native_deps/extracted_native_dependencies
 
 target_link_libraries(io-canary
         PRIVATE ${log-lib}

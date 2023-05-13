@@ -43,6 +43,19 @@ android {
         pickFirst 'lib/armeabi-v7a/libwechatbacktrace.so'
         pickFirst 'lib/arm64-v8a/libwechatbacktrace.so'
     }
+
+//    externalNativeBuild {
+//        cmake {
+//            path "CMakeLists.txt"
+//        }
+//    }
+//    sourceSets {
+//        main {
+//            jniLibs {
+//                setSrcDirs (['./libs'] as Set)
+//            }
+//        }
+//    }
 }
 
 dependencies {
@@ -60,7 +73,10 @@ dependencies {
     implementation project(':matrix-android-commons')
     implementation project(':matrix-resource-canary:matrix-resource-canary-android')
     implementation project(':matrix-resource-canary:matrix-resource-canary-common')
-
+    implementation project(':matrix-backtrace')
+    implementation project(':matrix-hooks')
+    implementation project(':matrix-jectl')
+    implementation project(':matrix-fd')
 
 //    implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
 //    implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true

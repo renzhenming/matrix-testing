@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.rzm.matrix_testing.hooks.TestHooksActivity;
 import com.rzm.matrix_testing.io.TestIOActivity;
 import com.rzm.matrix_testing.resources.TestLeakActivity;
 import com.rzm.matrix_testing.trace.TestTraceMainActivity;
@@ -38,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TestLeakActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button testHooks = findViewById(R.id.test_hooks);
+        testHooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TestHooksActivity.class);
                 startActivity(intent);
             }
         });
