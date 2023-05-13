@@ -33,10 +33,10 @@ android {
                 //c++_shared	 LLVM libc++ 运行时（共享）。	 C++ 异常和 RTTI；标准库
                 arguments = ['-DANDROID_STL=c++_shared']
 
-                // 带着后边两个配置编译不过
-//                arguments = ['-DANDROID_STL=c++_shared',
-//                             "-DEnableLOG=${gradle.enableLog() ? "ON" : "OFF"}" as String,
-//                             "-DQUT_STATISTIC_ENABLE=${gradle.enableLog() ? "ON" : "OFF"}" as String]
+                // 带着后边两个配置编译不过  ps已解决，双引号变单引号即可
+                arguments = ['-DANDROID_STL=c++_shared',
+                             '-DEnableLOG=${gradle.enableLog() ? "ON" : "OFF"}' as String,
+                             '-DQUT_STATISTIC_ENABLE=${gradle.enableLog() ? "ON" : "OFF"}' as String]
             }
 
             exportHeaders {
