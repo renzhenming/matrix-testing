@@ -76,6 +76,7 @@ static jmethodID GetStaticMethodID(JNIEnv* env, jclass clazz, const char* name, 
 
 JNIEXPORT jboolean Java_com_tencent_matrix_hook_HookManager_doPreHookInitializeNative(JNIEnv *env, jobject, jboolean /* debug */) {
     //自动为互斥量上锁和解锁
+    //lock_guard<>是一个模板类，它在自身作用域（生命周期）中具有构造时加锁，析构时解锁的功能
     std::lock_guard prehookInitLock(s_prehook_init_mutex);
 
     if (s_prehook_initialized) {

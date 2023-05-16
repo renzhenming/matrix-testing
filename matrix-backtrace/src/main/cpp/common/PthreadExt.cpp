@@ -39,6 +39,9 @@ BACKTRACE_EXPORT
 void BACKTRACE_FUNC_WRAPPER(pthread_ext_init)() {
     std::lock_guard<std::mutex> lock(m_init_mutex);
     if (!m_attr_key) {
+        //分配用于标识进程中线程特定数据的键。
+        //第一个参数为指向一个键值的指针，第二个参数指明了一个destructor函数，
+        // 如果这个参数不为空，那么当每个线程结束时，系统将调用这个函数来释放绑定在这个键上的内存块。
         pthread_key_create(&m_attr_key, attr_destructor);
     }
 }

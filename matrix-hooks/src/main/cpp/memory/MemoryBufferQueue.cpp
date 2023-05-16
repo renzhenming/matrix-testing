@@ -71,6 +71,24 @@ namespace matrix {
         delete queue_swapped_;
     }
 
+    //c++新属性 [[noreturn]]
+    //[[ noreturn ]]主要用来标志当前函数不会返回，需要注意的是其更大的意义在于标注，
+    // 表明在当前函数调用之后的函数或代码并不会被执行。在调试过程中并没有发现其有强制限制，
+    // 例如某个函数加上该属性标注后便不会返回（即使其有返回值），
+    // 其更多的是给编写者在阅读时的一种直观上的理解（即该函数之后的函数和代码不会被执行，
+    // 该处便为调用该函数的函数的最后执行尽头了），除此之外也可以告知编译器如何进行代码优化的处理，
+    // 例如无用代码删除等操作。
+    ////使用[[noreturn]]属性标注TODO函数
+    //[[noreturn] void todo()
+    //{
+    //    throw "error";
+    //}
+    //int main()
+    //{
+    //    func1();//可以执行
+    //    todo();
+    //    func2;  //不会被执行
+    //    return 0;
     [[noreturn]] void BufferManagement::process_routine(BufferManagement *this_) {
         size_t last_total_message_counter = 0;
         size_t total_message_counter = 0;
@@ -179,6 +197,7 @@ namespace matrix {
     void BufferManagement::start_process() {
         if (processing_) return;
         processing_ = true;
+        //函数指针的定义： 函数的返回值类型（*指针名）（函数的参数列表类型）
         pthread_create(&thread_, nullptr,
                        reinterpret_cast<void *(*)(void *)>(&BufferManagement::process_routine),
                        this);
