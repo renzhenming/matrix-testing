@@ -11,6 +11,7 @@ import com.rzm.matrix_testing.hooks.TestHooksActivity;
 import com.rzm.matrix_testing.io.TestIOActivity;
 import com.rzm.matrix_testing.resources.TestLeakActivity;
 import com.rzm.matrix_testing.trace.TestTraceMainActivity;
+import com.rzm.matrix_testing.traffic.TestTrafficActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TestHooksActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button testTraffic = findViewById(R.id.test_traffic_enter);
+        testTraffic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TestTrafficActivity.class);
                 startActivity(intent);
             }
         });

@@ -11,4 +11,5 @@ include ':matrix-backtrace'
 include ':matrix-hooks'
 include ':matrix-jectl'
 include ':matrix-fd'
+include ':matrix-traffic'
 rootProject.name = "matrix_testing"

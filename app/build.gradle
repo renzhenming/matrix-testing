@@ -77,6 +77,7 @@ dependencies {
     implementation project(':matrix-hooks')
     implementation project(':matrix-jectl')
     implementation project(':matrix-fd')
+    implementation project(':matrix-traffic')
 
 //    implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: MATRIX_VERSION, changing: true
 //    implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: MATRIX_VERSION, changing: true

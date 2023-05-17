@@ -12,6 +12,7 @@
       <module name="matrix_testing.matrix-jectl" target="1.8" />
       <module name="matrix_testing.matrix-resource-canary.matrix-resource-canary-android" target="1.8" />
       <module name="matrix_testing.matrix-trace-canary" target="1.8" />
+      <module name="matrix_testing.matrix-traffic" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
